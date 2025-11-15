@@ -1,0 +1,404 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ username }}'s Journey</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet"/>
+
+  <style>
+    /* GLOBAL ------------------------------------------------------------ */
+body {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  color: #f2f2f2;
+  background: linear-gradient(135deg,
+    #4b0f2f,       /* dark rose grief */
+    #361928 25%,   /* sunset ember */
+    #e84545 50%,   /* golden fire */
+    #8134a3 75%,   /* twilight violet */
+    #000000        /* night silence */
+  );
+  background-size: 400% 400%;
+  animation: bgFlow 40s ease infinite;
+  overflow-x: hidden;
+}
+
+@keyframes bgFlow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}  
+
+    h1, h2 {
+      margin: 0;
+      padding: 0;
+    }
+
+
+    /* HERO ------------------------------------------------------------ */
+    .hero {
+      padding: 6rem 1rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* GOLD SPOTLIGHT BEHIND IMAGE */
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: 40%;
+      left: 50%;
+      width: 500px;
+      height: 500px;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle, rgba(255,215,0,0.28), transparent 70%);
+      filter: blur(120px);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* AVATAR CONTAINER */
+    .avatar-wrap img {
+  width: 180px;
+  height: 180px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(255, 235, 245, 0.2); /* soft rose edge */
+  box-shadow:
+    0 0 20px rgba(186, 137, 13, 0.25),
+    0 0 40px rgba(186, 137, 13, 0.15),
+    0 0 60px rgba(115, 45, 145, 0.25); /* layered glow */
+  z-index: 2;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation: pulseGlow 4s ease-in-out infinite;
+}
+
+.avatar-wrap img:hover {
+  transform: scale(1.05);
+  box-shadow:
+    0 0 25px rgba(255, 105, 180, 0.4),
+    0 0 50px rgba(255, 105, 180, 0.2),
+    0 0 80px rgba(255, 255, 255, 0.1);
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    box-shadow:
+      0 0 20px rgba(186, 137, 13, 0.25),
+      0 0 40px rgba(186, 137, 13, 0.15),
+      0 0 60px rgba(115, 45, 145, 0.25);
+  }
+  50% {
+    box-shadow:
+      0 0 30px rgba(255, 105, 180, 0.35),
+      0 0 60px rgba(255, 105, 180, 0.2),
+      0 0 90px rgba(255, 255, 255, 0.1);
+  }
+}
+    .avatar {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+      border: none;
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.25);
+    }
+
+    /* GOLDEN TEXT EFFECT */
+    .hero-name {
+      font-size: 3rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, #9aaecc, #f1d98a, #b8860b);
+      -webkit-background-clip: text;
+              background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+      z-index: 2;
+      position: relative;
+    }
+
+    .hero-bio {
+      opacity: 0.9;
+      max-width: 600px;
+      margin: 1rem auto;
+      font-size: 1.1rem;
+      line-height: 1.7rem;
+      z-index: 2;
+      position: relative;
+    }
+
+
+    /* SECTIONS ------------------------------------------------------------ */
+    .section {
+      padding: 3rem 1rem;
+      text-align: center;
+    }
+
+    .section h2 {
+      font-size: 1.8rem;
+      background: linear-gradient(90deg, #ffd700, #b8860b);
+      -webkit-background-clip: text;
+              background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+
+    /* TAGS ------------------------------------------------------------ */
+    .tags {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.6rem;
+      margin-top: 1rem;
+    }
+    .tag {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 215, 0, 0.25);
+    }
+
+
+    /* CARDS ------------------------------------------------------------ */
+    .card-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+    .card {
+      width: 300px;
+      background: rgba(255, 255, 255, 0.06);
+      padding: 1.2rem;
+      border-radius: 14px;
+      backdrop-filter: blur(8px);
+      transition: 0.3s ease;
+      border: 1px solid rgba(255, 215, 0, 0.15);
+    }
+    .card:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(255, 215, 0, 0.3);
+    }
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.6rem;
+    }
+    .card small {
+      opacity: 0.7;
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+    }
+
+
+    /* BUTTONS ------------------------------------------------------------ */
+    .button {
+      display: inline-block;
+      margin-top: 0.6rem;
+      padding: 0.45rem 1rem;
+      background: linear-gradient(90deg, #ffd700, #b8860b);
+      color: #000;
+      font-weight: 700;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: 0.25s;
+    }
+    .button:hover {
+      filter: brightness(1.15);
+    }
+
+    .link-bar {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-top: 1.5rem;
+    }
+    .link-bar a, .link-bar button {
+      background: rgba(255, 255, 255, 0.07);
+      padding: 0.9rem 1.5rem;
+      border-radius: 10px;
+      text-decoration: none;
+      color: #fff;
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      transition: 0.3s;
+      cursor: pointer;
+      font-weight: 600;
+    }
+    .link-bar a:hover, .link-bar button:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .divider {
+      height: 1px;
+      width: 80%;
+      margin: 3rem auto;
+      background: linear-gradient(90deg, transparent, rgba(255, 215, 0, 0.4), transparent);
+    }
+
+    footer {
+      text-align: center;
+      padding: 2rem 1rem;
+      opacity: 0.6;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- HERO ------------------------------------------------------------ -->
+  <div class="hero">
+    <div class="avatar-wrap avatar-wrap-parallax">
+      <img src="{% static 'images/myphoto.jpg' %}" alt="My Photo">
+    </div>
+
+    <h1 class="hero-name">{{ username }}</h1>
+    <p class="hero-bio">{{ bio }}</p>
+  </div>
+
+
+  <!-- SKILLS ------------------------------------------------------------ -->
+  <div class="section">
+    <h2>Skills & Interests</h2>
+    <div class="tags">
+      {% for skill in skills %}
+        <div class="tag">{{ skill }}</div>
+      {% endfor %}
+      {% for interest in interests %}
+        <div class="tag">{{ interest }}</div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <!-- ABOUT ------------------------------------------------------------ -->
+  <div class="section">
+    <h2>About Me</h2>
+    <p style="max-width: 600px; margin: 0 auto; opacity: 0.85;">
+      I'm Rihan — a self-taught developer, sketch artist, and builder of expressive platforms.
+      I believe in emotional design, safe spaces, and empowering others through creativity and code.
+    </p>
+  </div>
+
+  <div class="divider"></div>
+
+
+  <!-- DIARIES ------------------------------------------------------------ -->
+  <div class="section">
+    <h2>Latest Diary Entries</h2>
+    <div class="card-list">
+      {% for entry in latest_diaries %}
+      <div class="card">
+        <h3>{{ entry.title }}</h3>
+        <p>{{ entry.content|truncatewords:20 }}</p>
+        <small>{{ entry.created_at|date:"F j, Y" }} · 👁 {{ entry.views }} views</small>
+        <a href="{% url 'diary-detail' entry.pk %}" class="button">Read More</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <!-- PROJECTS ------------------------------------------------------------ -->
+  <div class="section">
+    <h2>Latest Projects</h2>
+    <div class="card-list">
+      {% for project in latest_projects %}
+      <div class="card">
+        <h3>{{ project.title }}</h3>
+        <p>{{ project.description|truncatewords:20 }}</p>
+        <small>{{ project.created_at|date:"F j, Y" }} · 👁 {{ project.views }} views</small>
+        <a href="{% url 'project-detail' project.pk %}" class="button">View Project</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+
+  <div class="divider"></div>
+
+
+  <!-- EXPLORE ------------------------------------------------------------ -->
+  <div class="section">
+    <h2>Explore More</h2>
+    <div class="link-bar">
+      <a href="{% url 'diary-list' %}">📓 All Diaries</a>
+      <a href="{% url 'project-list' %}">🛠 All Projects</a>
+      <a href="{% url 'sketch-list' %}">🎨 All Sketches</a>
+    </div>
+  </div>
+
+
+  <!-- DOWNLOAD + SHARE ------------------------------------------------------------ -->
+  <div class="section">
+    <h2>Download & Share</h2>
+    <div class="link-bar">
+      <a href="{{ resume_url }}" download>📄 Download Resume</a>
+      <button onclick="navigator.clipboard.writeText(window.location.href)">🔗 Copy Profile Link</button>
+      <a href="{% url 'suggest' %}">💬 Suggest Something</a>
+    </div>
+  </div>
+
+
+  <!-- CONTACT ------------------------------------------------------------ -->
+  <div class="section">
+    <h2>Contact Me</h2>
+    <p>Email: <a style="color:#ffd700;" href="mailto:{{ email }}">{{ email }}</a></p>
+  </div>
+
+
+  <footer>Built with love by {{ username }} · {{ now|date:"Y" }}</footer>
+
+
+  <!-- PARALLAX JS ------------------------------------------------------------ -->
+  <script>
+  (function(){
+    const wrap = document.querySelector('.avatar-wrap-parallax');
+    if(!wrap) return;
+
+    const onMove = (e) => {
+      const r = wrap.getBoundingClientRect();
+      const cx = r.left + r.width/2;
+      const cy = r.top + r.height/2;
+
+      const clientX = e.clientX ?? (e.touches?.[0]?.clientX || 0);
+      const clientY = e.clientY ?? (e.touches?.[0]?.clientY || 0);
+
+      const x = (clientX - cx) / r.width;
+      const y = (clientY - cy) / r.height;
+
+      wrap.style.transform = `
+        perspective(900px)
+        rotateX(${(-y*8).toFixed(2)}deg)
+        rotateY(${(x*10).toFixed(2)}deg)
+        translateZ(6px)
+      `;
+    };
+
+    const reset = () => {
+      wrap.style.transform = `
+        perspective(900px)
+        rotateX(0deg)
+        rotateY(0deg)
+        translateZ(0px)
+      `;
+    };
+
+    window.addEventListener("mousemove", onMove);
+    window.addEventListener("touchmove", onMove);
+    window.addEventListener("touchend", reset);
+    window.addEventListener("mouseleave", reset);
+  })();
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ diary.title }} · Diary</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #3a1c71, #d76d77, #ffaf7b);
+      color: #fff;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: rgba(255,255,255,0.1);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3);
+    }
+    .title {
+      font-size: 2.5rem;
+      color: #ffd700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .meta {
+      text-align: center;
+      font-size: 0.9rem;
+      opacity: 0.7;
+      margin-bottom: 2rem;
+    }
+    .content-wrapper {
+      position: relative;
+    }
+    .content {
+      font-size: 1rem;
+      white-space: pre-wrap;
+      line-height: 1.6;
+      overflow: hidden;
+      max-height: 300px;
+      transition: max-height 0.5s ease;
+    }
+    .content.expanded {
+      max-height: none;
+    }
+    .read-more-btn {
+      display: block;
+      margin: 1rem auto 2rem;
+      background: none;
+      border: none;
+      color: #ffd700;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    textarea {
+      width: 100%;
+      height: 100px;
+      padding: 0.75rem;
+      font-size: 1rem;
+      border-radius: 10px;
+      border: none;
+      resize: vertical;
+      background: #2c2c2c;
+      color: #fff;
+      box-shadow: inset 0 0 5px rgba(0,0,0,0.3);
+    }
+    button.submit-btn {
+      margin-top: 0.5rem;
+      padding: 0.6rem 1.2rem;
+      background: linear-gradient(to right, #ffd700, #ffcc00);
+      color: #1c1c1c;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    }
+    .comment {
+      background: rgba(255,255,255,0.08);
+      padding: 1rem;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      box-shadow: 0 0 8px rgba(0,0,0,0.2);
+    }
+    .comment small {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1 class="title">{{ diary.title }}</h1>
+    <div class="meta">
+      ✍️ {{ diary.user.username }} · 🕒 {{ diary.created_at|date:"F j, Y · g:i A" }} · 👁️ {{ diary.views }} views
+    </div>
+
+    <div class="content-wrapper">
+      <div id="diary-content" class="content collapsed">
+        {{ diary.content|linebreaksbr }}
+      </div>
+      <button id="toggle-btn" class="read-more-btn">📖 Read More</button>
+    </div>
+  </div>
+
+  <div class="container" style="margin-top: 3rem;">
+    <h2 style="font-size: 2rem; color: #ffd700;">💬 Share Your Thoughts</h2>
+    <form method="post" style="margin-bottom: 2rem;">
+      {% csrf_token %}
+      <textarea name="comment" placeholder="Write something meaningful..." required></textarea>
+      <br>
+      <button type="submit" class="submit-btn">✨ Submit</button>
+    </form>
+
+    <h3 style="font-size: 1.6rem; color: #ffd700;">🗨️ Recent Comments</h3>
+    <div>
+      {% for comment in diary.comments.all %}
+        <div class="comment">
+          <p style="margin: 0;">{{ comment.content }}</p>
+          <small>🕒 {{ comment.created_at|date:"F j, Y · g:i A" }}</small>
+        </div>
+      {% empty %}
+        <p style="font-style: italic; opacity: 0.7;">No comments yet. Be the first to share your thoughts!</p>
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    const content = document.getElementById('diary-content');
+    const button = document.getElementById('toggle-btn');
+
+    button.addEventListener('click', () => {
+      content.classList.toggle('expanded');
+      content.classList.toggle('collapsed');
+      button.textContent = content.classList.contains('expanded') ? '🔽 Show Less' : '📖 Read More';
+    });
+  </script>
+
+</body>
+</html>

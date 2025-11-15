@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{{ project.title }} · SkillReel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #1f1c2c, #928dab);
+      color: #fff;
+      padding: 2rem;
+    }
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: rgba(255,255,255,0.08);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    }
+    .title {
+      font-size: 2.5rem;
+      color: #ffd700;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .meta {
+      text-align: center;
+      font-size: 1rem;
+      opacity: 0.7;
+      margin-bottom: 2rem;
+    }
+    .image {
+      width: 100%;
+      max-width: 700px;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0,0,0,0.3);
+      margin: 0 auto 2rem;
+      display: block;
+    }
+    .description {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      white-space: pre-wrap;
+      margin-bottom: 2rem;
+    }
+    .tech {
+      font-size: 1rem;
+      color: #ccc;
+      margin-bottom: 1rem;
+    }
+    .views {
+      font-size: 0.9rem;
+      opacity: 0.6;
+      text-align: right;
+    }
+    .comment-section {
+      margin-top: 3rem;
+    }
+    .comment-form textarea {
+      width: 100%;
+      padding: 1rem;
+      border-radius: 8px;
+      border: none;
+      resize: vertical;
+      font-family: 'Inter', sans-serif;
+    }
+    .comment-form button {
+      margin-top: 1rem;
+      padding: 0.5rem 1.5rem;
+      background: #ffd700;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .comment {
+      background: rgba(255,255,255,0.1);
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+    }
+    .comment strong {
+      color: #ffd700;
+    }
+    .comment small {
+      opacity: 0.6;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1 class="title">{{ project.title }}</h1>
+    <div class="meta">🧑‍💻 Created by {{ project.user.username }} · 🕒 {{ project.created_at|date:"F j, Y · g:i A" }}</div>
+
+    {% if project.image %}
+      <img src="{{ project.image.url }}" alt="{{ project.title }}" class="image">
+    {% else %}
+      <img src="/static/default.jpg" alt="No image available" class="image">
+    {% endif %}
+
+    <div class="description">{{ project.description }}</div>
+
+    {% if project.tech_stack %}
+      <div class="tech">🧪 Tech Stack: {{ project.tech_stack }}</div>
+    {% endif %}
+
+    <div class="views">👁️ Views: {{ project.views }}</div>
+
+    <div class="comment-section">
+      <h2>💬 Comments</h2>
+
+      <form method="POST" class="comment-form">
+        {% csrf_token %}
+        <textarea name="content" rows="4" placeholder="Write your comment..." required></textarea>
+        <button type="submit">Post Comment</button>
+      </form>
+
+      {% for comment in comments %}
+        <div class="comment">
+          <strong>{{ comment.user.username }}</strong> · <small>{{ comment.created_at|date:"F j, Y · g:i A" }}</small>
+          <p>{{ comment.content }}</p>
+        </div>
+      {% empty %}
+        <p style="opacity:0.6;">No comments yet. Be the first to share your thoughts!</p>
+      {% endfor %}
+    </div>
+  </div>
+
+</body>
+</html>

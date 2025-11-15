@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Suggest Something</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet"/>
+</head>
+<body style="margin: 0; font-family: 'Inter', sans-serif; background: linear-gradient(to right, #ffecd2, #fcb69f); color: #333; padding: 2rem;">
+
+  <div style="max-width: 700px; margin: auto; background: rgba(255,255,255,0.7); padding: 2rem; border-radius: 16px; box-shadow: 0 0 20px rgba(0,0,0,0.2);">
+    <h1 style="font-size: 2.5rem; color: #ff6f61; text-align: center;">🌟 Suggest Something</h1>
+    <p style="text-align: center; font-size: 1rem; margin-bottom: 2rem;">Your thoughts matter. Share an idea, a wish, or a kind word — anonymously and safely.</p>
+
+    <form method="post" style="margin-bottom: 2rem;">
+      {% csrf_token %}
+      <textarea name="comment" placeholder="Type your suggestion here..." required
+        style="width: 100%; height: 120px; padding: 1rem; font-size: 1rem; border-radius: 12px; border: none; resize: vertical; background: #fff8f0; color: #333; box-shadow: inset 0 0 5px rgba(0,0,0,0.1);"></textarea>
+      <br>
+      <button type="submit"
+        style="margin-top: 0.75rem; padding: 0.6rem 1.2rem; background: linear-gradient(to right, #ff6f61, #ff9966); color: #fff; font-weight: bold; border: none; border-radius: 8px; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+        💌 Submit Suggestion
+      </button>
+    </form>
+
+    <h2 style="font-size: 1.8rem; color: #ff6f61; margin-bottom: 1rem;">💭 Recent Suggestions</h2>
+    <div>
+      {% for comment in suggestions %}
+        <div style="background: #fff; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; box-shadow: 0 4px 12px rgba(0,0,0,0.1);">
+          <p style="margin: 0; font-size: 1rem; white-space: pre-wrap;">{{ comment.content }}</p>
+          <small style="display: block; margin-top: 0.5rem; font-size: 0.8rem; color: #999;">🕒 {{ comment.created_at|date:"F j, Y · g:i A" }}</small>
+        </div>
+      {% empty %}
+        <p style="font-style: italic; opacity: 0.7;">No suggestions yet. Be the first to share something beautiful.</p>
+      {% endfor %}
+    </div>
+  </div>
+
+</body>
+</html>
