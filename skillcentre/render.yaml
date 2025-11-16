@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: skillcentre
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn skillcentre.wsgi
+    autoDeploy: true
+    envVars:
+      - key: SECRET_KEY
+        value: 24b559a4399e2bfeb6191ac73eed3a6e
+      - key: DATABASE_URL
+        value: postgresql://rihan:Wg4hewMOZIvZrTi1pSiA6OGHNz9fOzla@dpg-d4cp4e75r7bs73aiblj0-a.oregon-postgres.render.com/skillcentre_db
+    postDeployCommand: python manage.py migrate
